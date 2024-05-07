@@ -36,6 +36,37 @@ def cramers_v(x, y):
     return v
 
 
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# サンプルデータセットを読み込む
+tips = sns.load_dataset('tips')
+
+# FacetGridを作成する
+g = sns.FacetGrid(tips, col='day', aspect=0.5)
+
+# 各サブプロットにヒストグラムを描画する
+# g.map_dataframe(sns.histplot, y='total_bill', bins=10)
+
+# 左端以外のサブプロットのy軸の色を変更する
+for ax in g.axes.flat:
+    sns.histplot(y=df["tip"], ax=ax, alpha=0.5, element="step")
+    ax2 = ax.twiny()
+    sns.boxplot(y=df["tip"], ax=ax2, width=0.3, boxprops={"alpha": 0.7})
+
+
+    if ax != g.axes.flat[0]:
+        ax.spines['left'].set_color('white')
+        ax.tick_params(axis='y', colors='white')
+        
+        ax2.spines['left'].set_color('white')
+        ax2.tick_params(axis='x', colors='white')
+    ax2.spines['top'].set_color('white')
+    ax2.spines['right'].set_color('white')
+
+# 結果を表示する
+plt.show()
+
 class GreedyFeatureSelection():
     """
     # Greedy feature selection
