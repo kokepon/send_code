@@ -94,6 +94,59 @@ for ax, sex, i in iterator:
     
 plt.tight_layout()
 
+
+def calculate_figsize(nrows, ncols, subplot_width=1, subplot_height=4):
+    """指定した行列数に基づいてfigsizeを計算する。
+    
+    Args:
+        nrows (int): サブプロットの行数
+        ncols (int): サブプロットの列数
+        subplot_width (float): 各サブプロットの幅（インチ）
+        subplot_height (float): 各サブプロットの高さ（インチ）
+    
+    Returns:
+        tuple: (fig_width, fig_height)
+    """
+    fig_width = subplot_width * ncols
+    fig_height = subplot_height * nrows
+    return (fig_width, fig_height)
+
+
+sns.set_theme(context="notebook", style="darkgrid")
+ncols = df["category"].nunique()*2
+nrows = 1
+
+
+if ncols >= 12:
+    nrows = ncols // 12
+    ncols = 12
+figsize = calculate_figsize(nrows, ncols)
+print(figsize)
+fig, axes = plt.subplots(ncols=ncols, nrows=nrows, sharey=True, figsize=figsize)
+axes = axes.flatten()
+iterator = zip(axes, sorted(np.concatenate([df["category"].unique(), df["category"].unique()])), range(df["category"].nunique()*2))
+for ax, category, i in iterator:
+    ax = sns.histplot(df[df["category"]==category], y="tip", ax=ax)
+    ax.set_title(category)
+    ax.xaxis.set_ticks([])
+    ax.set_xlabel(None)
+    ax.set_ylabel(None)
+    ax.set_facecolor("#FFFFFF")
+
+    ax, category, i = next(iterator)
+    ax = sns.boxplot(df[df["category"]==category], y="tip", ax=ax, width=0.3)
+    ax.set_title(category)
+    ax.xaxis.set_ticks([])
+    ax.set_ylabel(None)
+    ax.set_facecolor("#FFFFFF")
+
+    # if i != 0:
+    #     ax.yaxis.set_ticks([])
+    # ax.grid(False, axis='y')
+    # ax.xaxis.set_ticks([])
+    
+plt.tight_layout()
+
 class GreedyFeatureSelection():
     """
     # Greedy feature selection
