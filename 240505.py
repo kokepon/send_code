@@ -67,6 +67,33 @@ for ax in g.axes.flat:
 # 結果を表示する
 plt.show()
 
+
+sns.set_theme(context="notebook", style="darkgrid")
+fig, axes = plt.subplots(ncols=df["sex"].nunique()*2, sharey=True)
+axes = axes.flatten()
+iterator = zip(axes, sorted(np.concatenate([df["sex"].unique(), df["sex"].unique()])), range(df["sex"].nunique()*2))
+for ax, sex, i in iterator:
+    ax = sns.histplot(df[df["sex"]==sex], y="tip", ax=ax)
+    ax.set_title(sex)
+    ax.xaxis.set_ticks([])
+    ax.set_xlabel(None)
+    ax.set_ylabel(None)
+    ax.set_facecolor("#FFFFFF")
+
+    ax, sex, i = next(iterator)
+    ax = sns.boxplot(df[df["sex"]==sex], y="tip", ax=ax, width=0.3)
+    ax.set_title(sex)
+    ax.xaxis.set_ticks([])
+    ax.set_ylabel(None)
+    ax.set_facecolor("#FFFFFF")
+
+    # if i != 0:
+    #     ax.yaxis.set_ticks([])
+    # ax.grid(False, axis='y')
+    # ax.xaxis.set_ticks([])
+    
+plt.tight_layout()
+
 class GreedyFeatureSelection():
     """
     # Greedy feature selection
