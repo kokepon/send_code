@@ -4,6 +4,7 @@ import yfinance as yf
 import seaborn as sns
 import matplotlib.pyplot as plt
 import math
+import matplotlib.dates as mdates
 
 
 # Download stock data
