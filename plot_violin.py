@@ -47,7 +47,7 @@ def plot_violin(df, category, x, y, border, title, pptx):
                             cellColours=[["white"]*describe.shape[1] if i%2==0 else ["lightgray"]*describe.shape[1] for i in range(describe.shape[0])],
                             )
         table.auto_set_font_size(False)
-        table.set_fontsize(15)
+        table.set_fontsize(15) 
         table.scale(1, 1.6)
     
     figure.suptitle(title, fontsize=30)
@@ -57,6 +57,7 @@ def plot_violin(df, category, x, y, border, title, pptx):
     
     figure.savefig(f"./{title}.png")
     figure.tight_layout()
+    plt.show()
     # pptx.save(f"./{title}.png")
 
 # plot_violin(df, "category", x="week", y="Open", title="Title", pptx=None)
@@ -74,4 +75,10 @@ def plot_violins(df, category_col, x, y, title, pptx):
         else:
             plot_violin(df_plot, category_col, x, y, 100, title, pptx)
 
-plot_violins(df, "category", "week", "Open", None, None)
+plot_violins(df, "category", "week", "Open", "A", None)
+
+
+            # ax.plot([center, center], [q25, q75],
+            #         linewidth=self.linewidth * 5,
+            #         color="black",
+            #         solid_capstyle='butt')
