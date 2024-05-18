@@ -21,6 +21,7 @@ df = df.sort_values("Open").reset_index(drop=True)
 
 def plot_scatter_by_category(df, category, x, y, border, title, pptx):
     sns.set_theme(context="notebook", style="darkgrid")
+    df_id_merge = df[["id", x]].value_counts().reset_index()[["id", x]]
     figure, axes = plt.subplots(nrows=2, ncols=3, figsize=(20, 10), sharey=True)
     plt.subplots_adjust(hspace=0.3)
     axes = iter(axes.flatten())
@@ -28,8 +29,15 @@ def plot_scatter_by_category(df, category, x, y, border, title, pptx):
     for cat, c in zip(sorted(df[category].unique()), color):
         ax = next(axes)
         df_plot = df[df[category]==cat].sort_values(x)
-        ax = sns.scatterplot(df_plot, x=x, y=y, ax=ax, color=c)
+        df_agg = df_plot.groupby("id")[y].mean().reset_index()
+        df_agg = df_agg.merge(df_id_merge, on="id")
+        ax = sns.scatterplot(df_agg, x=x, y=y, ax=ax, color=c)
+        df_moving_average = df_plot.groupby("id")[y].mean().reset_index()
+        df_moving_average = df_moving_average.merge(df_id_merge, on="id").drop("id", axis=1)
+        df_moving_average = df_moving_average.sort_values(x).rolling(window=3, on=x).mean()
+        ax = sns.lineplot(df_moving_average, x=x, y=y, ax=ax)
         ax.set_title(cat)
+        ax.xaxis.set_major_formatter(mdates.DateFormatter('%m/%d'))
         
         # ax.set_xlabel(None)
         # ax.set_xticklabels([])
