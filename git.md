@@ -163,3 +163,107 @@ git diff <commitID> <commitID>
 
 ブランチ同士のdiffを確認する
 git diff origin/main main
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+git config --global --replace-all core.pager "less -F-X"
+
+リモートリポジトリがどこに設定されているかの確認ができる
+git remote -v
+
+
+ブランチの作成
+作業用のブランチを作成する
+git branch [branch-name]
+git switch -c [branch-name]
+
+
+gitは作業履歴をコミット単位で管理する
+変更内容をまとめて袋に入れて(add)からコミットするイメージ
+
+
+リモートリポジトリにローカルリポジトリの内容を反映する　push
+push前に一度リモートリポの内容をローカルリポに反映する
+なぜなら自分が作業を行っている間にリモートリポが他の人が更新しているかもしれないから
+git pull origin main
+git push origin feature
+
+pushした内容をリモートリポジトリでプルリクエストを出す
+どのブランチからどのブランチへマージするのかを選択する
+main <- feature
+
+プルリクエストは基本的に出した人以外が承認する
+
+
+ローカルリポジトリにリモートリポジトリの内容を反映する
+ローカルリポジトリでmainブランチに移動する
+リモートリポジトリのmainブランチの情報をローカルリポジトリのmainブランチにpullする
+
+![alt text](image-2.png)
+
+ローカルリポジトリは基本的に最新のリモートリポジトリと同じ状態にしておくのが望ましい
+
+git checkout main
+git pull origin main
+
+
+不要になったブランチを削除する
+ローカルリポジトリの不要なブランチを削除する
+git branch -D [branch-name]
+ブラウザでリモートリポジトリの不要なブランチを削除する
+
+
+gitがtrackしているファイルがわかる
+git ls-files
+
+
+working directoryの変更を破棄する
+
+
+git mvと通常の名前変更した場合の違い
+
+git rm 名前変更として扱われる
+通常の名前変更 旧ファイル削除　新ファイル作成という扱い
+
+sublimeをデフォルトのエディタに設定する
+git config --global core.editor "subl -n -w"
+
+
+マージのパターン
+![alt text](image-1.png)
+Fast forward
+マージする際に何も障害となるコミットがない場合
+
+Fast forwardでない場合
+マージコミットが作成される
+
+    Automatic merge
+        同じ個所を変更していない場合、Gitが自動的にマージしてくれる
+        
+    Conflict
+        同じ個所を変更している場合Gitがどちらを採用すべきか判断ができない→自分で対処する必要がある
+
+
+コンフリクトを起こさないようにするには？
+* 同じファイルを複数人で変更しない
+* 同じファイルを変更する場合には、チームでコミュニケーションを取っておく
+
+コンフリクトは悪いことではなく、起こってしまうもの
+
+
